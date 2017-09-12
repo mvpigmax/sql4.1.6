@@ -1,0 +1,65 @@
+#!/bin/sh
+# SQLAPI++ build shell file for Solaris Studio C++ compiler
+# GNU make required version > 3.81
+# ***********************************
+# Special build configuration defines
+# CFG=(release|debug)
+# CFG_LINK=(dynamic|static)
+# SA_DEFINE=SA_NO_TRIAL
+# ***********************************
+# SQLAPI_OS		SQLAPI_LINUX|SQLAPI_SOLARIS|SQLAPI_AIX|SQLAPI_HPUX|SQLAPI_OSX|SQLAPI_SCOOSR5
+# SA_64BIT		build 64-bit version
+# SA_32BIT		build 32-bit version
+# SA_CLIENT_ALL		build all DBMS support
+# SA_CLIENT_IBASE	build InterBase/Firebird support
+# SA_CLIENT_ODBC	build ODBC support
+# SA_CLIENT_ORACLE	build Oracle support
+# SA_CLIENT_SQLBASE	build SQLBase support
+# SA_CLIENT_INFORMIX	build Informix support
+# SA_CLIENT_DB2		build DB2 support
+# SA_CLIENT_SYBASE	build Sybase support
+# SA_CLIENT_MYSQL	build MySQL support
+# SA_CLIENT_PGSQL	build PostgreSQL support
+# SA_CLIENT_SQLITE	build SQLite support
+# SA_CLIENT_ASA		build SQL Anywhere support
+# ***********************************
+# SA_UNICODE		build UNICODE version
+# ***********************************
+# Some features
+# SA_USE_PTHREAD	build thread safe library (with pthread library)
+# SA_PARAM_USE_DEFAULT	Use default parameter values with procedures (by default they are NULL)
+# ***********************************
+# Link SQLAPI++ with real DBMS include files (don't use includes provided by SQLAPI++)
+# SA_INCLUDES_SYBASE	specify Sybase include folder
+# SA_INCLUDES_ODBC	specify ODBC include folder
+# ***********************************
+# Link SQLAPI++ with DBMS client libraries (don't load them at runtime, experimental)
+# SA_STATIC_INFORMIX	with Informix ODBC/CLI
+# SA_STATIC_DB2	with DB2 CLI
+# SA_STATIC_ORACLE	with Oracle OCI
+# SA_STATIC_MYSQL	with MySQL client library
+# SA_STATIC_SQLITE	with SQLite client library
+# SA_STATIC_SYBASE	with Sybase Open Client library
+# ***********************************
+# SA_STRING_EXT	Use some modern SAString modifications
+# SA_THROW_WRONG_DATA_EXCEPTION Throw SAException when value assigned is not correct
+# ***********************************
+# SA_ODBC_SQL_WCHART_CONVERT (0|1) user UTF-16 or wchar_t for SQLWCHAR data type
+# ***********************************
+
+# GNU make required
+GMAKE=make
+
+SA_OPTIONS="SA_32BIT=1 SA_CLIENT_ALL=1 SA_DEFINE=SA_NO_TRIAL SA_USE_PTHREAD=1 "
+
+echo ------------------------
+echo --- Building release ---
+echo -----------------------
+$GMAKE -f Makefile.ss CFG=release CFG_LINK=dynamic $SA_OPTIONS safe_clean all
+$GMAKE -f Makefile.ss CFG=release CFG_LINK=static $SA_OPTIONS safe_clean all
+
+echo ----------------------
+echo --- Building debug ---
+echo ----------------------
+$GMAKE -f Makefile.ss CFG=debug CFG_LINK=dynamic $SA_OPTIONS safe_clean all
+$GMAKE -f Makefile.ss CFG=debug CFG_LINK=static $SA_OPTIONS safe_clean all

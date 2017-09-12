@@ -1,0 +1,138 @@
+SA_CLI_DEFS=
+SA_OBJS=SQLAPI.obj ISAClient.obj samisc.obj
+
+ifneq "$(SQLAPI_OS)" "SQLAPI_WINDOWS"
+SA_OBJS += utf16.obj 
+endif
+
+ifdef SA_CLIENT_SQLBASE
+SA_CLI_DEFS += -DSQLAPI_sbClient
+SA_INCLUDES_SQLBASE = -I../include/sqlbase
+SA_OBJS += sbAPI.obj sbClient.obj
+endif
+
+ifdef SA_CLIENT_IBASE
+SA_CLI_DEFS += -DSQLAPI_ibClient
+SA_INCLUDES_IBASE = -I../include/ibase
+SA_OBJS += ib5API.obj ibClient.obj
+endif
+
+ifdef SA_CLIENT_ODBC
+SA_CLI_DEFS += -DSQLAPI_odbcClient
+SA_INCLUDES_ODBC += -I../include/odbc$(SA_INCLUDE_SUFFIX)
+SA_OBJS += odbcAPI.obj odbcClient.obj
+endif
+
+ifdef SA_CLIENT_ORACLE
+SA_CLI_DEFS += -DSQLAPI_oraClient
+SA_INCLUDES_ORACLE = -I../include/ora$(SA_INCLUDE_SUFFIX)
+SA_OBJS += ora7API.obj ora8API.obj oraClient.obj
+ifdef SA_STATIC_ORACLE
+SA_API_SRC_SUFFIX_ORACLE = _static
+LIBS += -lclntsh
+else
+SA_API_SRC_SUFFIX_ORACLE = $(SA_API_SRC_SUFFIX)
+endif
+endif
+
+ifdef SA_CLIENT_MSSQL
+SA_CLI_DEFS += -DSQLAPI_ssClient
+SA_INCLUDES_MSSQL = -I../include/ss$(SA_INCLUDE_SUFFIX)
+SA_OBJS += ssClient.obj
+ifdef SA_NO_DBLIB
+CPPDEFS += -DSA_NO_DBLIB
+else
+SA_OBJS += ss6API.obj ssDbLibClient.obj
+endif
+ifdef SA_NO_OLEDB
+CPPDEFS += -DSA_NO_OLEDB
+else
+SA_OBJS += ssOleDbAPI.obj ssOleDbClient.obj
+endif
+ifdef SA_NO_SQLNCLI
+CPPDEFS += -DSA_NO_SQLNCLI
+else
+SA_OBJS += ssNcliAPI.obj ssNcliClient.obj
+endif
+endif
+
+ifdef SA_CLIENT_INFORMIX
+SA_CLI_DEFS += -DSQLAPI_infClient
+SA_INCLUDES_INFORMIX = -I../include/informix $(SA_INCLUDES_ODBC) 
+SA_OBJS += infAPI.obj infClient.obj
+ifdef SA_STATIC_INFORMIX
+SA_API_SRC_SUFFIX_INFORMIX = _static
+LIBS += -liclit09b
+else
+SA_API_SRC_SUFFIX_INFORMIX = $(SA_API_SRC_SUFFIX)
+endif
+endif
+
+ifdef SA_CLIENT_DB2
+SA_CLI_DEFS += -DSQLAPI_db2Client
+SA_INCLUDES_DB2 += -I../include/db2$(SA_INCLUDE_SUFFIX)
+SA_OBJS += db2API.obj db2Client.obj
+ifdef SA_STATIC_DB2
+SA_API_SRC_SUFFIX_DB2 = _static
+LIBS += -ldb2
+else
+SA_API_SRC_SUFFIX_DB2 = $(SA_API_SRC_SUFFIX)
+endif
+endif
+
+ifdef SA_CLIENT_SYBASE
+SA_CLI_DEFS += -DSQLAPI_sybClient
+ifndef SA_SYBASE_LARGE_IDENTIFIERS
+SA_CLI_DEFS += -DCS_NO_LARGE_IDENTIFIERS
+endif
+SA_INCLUDES_SYBASE += -I../include/sybase
+SA_OBJS += sybAPI.obj sybClient.obj
+ifdef SA_STATIC_SYBASE
+SA_API_SRC_SUFFIX_SYBASE = _static
+LIBS += -lsybcs -lsybct
+else
+SA_API_SRC_SUFFIX_SYBASE = $(SA_API_SRC_SUFFIX)
+endif
+endif
+
+ifdef SA_CLIENT_MYSQL
+SA_CLI_DEFS += -DSQLAPI_myClient
+SA_INCLUDES_MYSQL = -I../include/mysql
+SA_OBJS += myAPI.obj myClient.obj
+ifdef SA_STATIC_MYSQL
+SA_API_SRC_SUFFIX_MYSQL = _static
+LIBS += -lbmysqlclient
+else
+SA_API_SRC_SUFFIX_MYSQL = $(SA_API_SRC_SUFFIX)
+endif
+endif
+
+ifdef SA_CLIENT_PGSQL
+SA_CLI_DEFS += -DSQLAPI_pgClient
+SA_INCLUDES_PGSQL = -I../include/pgsql
+SA_OBJS += pgAPI.obj pgClient.obj
+endif
+
+ifdef SA_CLIENT_SQLITE
+SA_CLI_DEFS += -DSQLAPI_slClient
+SA_INCLUDES_SQLITE = -I../include/sqlite
+SA_OBJS += sl3API.obj sl3Client.obj
+ifdef SA_STATIC_SQLITE
+SA_API_SRC_SUFFIX_SQLITE = _static
+SA_OBJS += sqlite3.obj
+else
+SA_API_SRC_SUFFIX_SQLITE = $(SA_API_SRC_SUFFIX)
+endif
+endif
+
+ifdef SA_CLIENT_ASA
+SA_CLI_DEFS += -DSQLAPI_asaClient
+SA_INCLUDES_ASA = -I../include/asa
+SA_OBJS += asaAPI.obj asaClient.obj
+ifdef SA_STATIC_ASA
+SA_API_SRC_SUFFIX_ASA = _static
+LIBS += -ldbcapi
+else
+SA_API_SRC_SUFFIX_ASA = $(SA_API_SRC_SUFFIX)
+endif
+endif

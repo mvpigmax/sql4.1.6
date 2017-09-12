@@ -1,0 +1,160 @@
+# Makefile for SQLAPI++
+# Windows Borland C++ version
+
+CPP = bccosx.exe -q --sysroot=$(SA_SYSROOT) --sysinc=/usr/include;/usr/include/xpc;/usr/include/os
+LINK = xlink.exe -q -Fr$(SA_SYSROOT) -Fp/usr/lib -Fp/usr/lib/system
+TLIB = tlib.exe /A
+LIBS = libSystem.dylib libcgunwind.1.0.dylib libcgcrtl_nonshared.a 
+SA_LIBC = 
+
+!IF "$(CFG)" != "release" && "$(CFG)" != "debug"
+CFG=release
+!MESSAGE SQLAPI: Build "release" configuration
+!MESSAGE
+!ENDIF 
+
+!IF "$(CFG_LINK)" != "static" && "$(CFG_LINK)" != "dynamic"
+CFG_LINK=dynamic
+!MESSAGE SQLAPI: Use "dynamic" configuration
+!MESSAGE
+!ENDIF 
+
+!IF "$(SA_DEFINE)" == ""
+SA_DEFINE=SA_TRIAL
+!MESSAGE SQLAPI: WARNING!!! Use trial compile flag
+!MESSAGE
+!ENDIF
+
+!IF "$(CFG_LINK)" == "static"
+SA_LIBC = libcgcrtl.a libcgstl.a 
+!ELSE
+SA_LIBC = libcgcrtl.dylib libcgstl.dylib
+!ENDIF
+
+!IFDEF SA_RUNTIME
+!IF "$(SA_RUNTIME)" == "static"
+SA_LIBC = libcgcrtl.a libcgstl.a 
+!MESSAGE SQLAPI: Use "static" runtime
+!ELSE
+SA_LIBC = libcgcrtl.dylib libcgstl.dylib 
+!MESSAGE SQLAPI: Use "dynamic" runtime
+!ENDIF
+!ENDIF
+LIBS = $(LIBS) $(SA_LIBC)
+
+SA_API_SRC_SUFFIX=_linux
+SA_INCLUDE_SUFFIX=_linux
+
+SA_INCLUDES = -I../include
+CPPDEFS=-D$(SA_DEFINE) -DSQLAPI_MACOSX
+CPPFLAGS = -w -a8 -tD $(SA_CPPFLAGS)
+LDFLAGS = -x -r -Gn $(SA_LDFLAGS)
+
+!IFDEF SA_USE_PCH
+CPPFLAGS_PCH = -Hu -H=osdep.pch
+CPPFLAGS_PCH_CREATE = -H -H=osdep.pch   
+!ENDIF
+
+LDFLAGS = $(LDFLAGS) -L$(BCCDIR)\Lib\osx32\release
+
+!IFDEF SA_USE_STL
+CPPDEFS  = $(CPPDEFS) /DSA_USE_STL
+!ENDIF
+
+!IFDEF SA_PARAM_USE_DEFAULT
+CPPDEFS  = $(CPPDEFS) -DSA_PARAM_USE_DEFAULT
+!ENDIF
+
+!IFDEF SA_INTERNAL_STRTOULL
+CPPDEFS  = $(CPPDEFS) -DSA_INTERNAL_STRTOULL
+!ENDIF
+
+!IFDEF SA_STRING_EXT
+CPPDEFS  = $(CPPDEFS) -DSA_STRING_EXT
+!ENDIF
+
+!IFDEF SA_THROW_WRONG_DATA_EXCEPTION
+CPPDEFS  = $(CPPDEFS)  -DSQLAPI_DATETIME_WRONG_EXCEPTION
+!ENDIF
+
+!IFDEF SA_UNICODE
+CPPDEFS = $(CPPDEFS) -DUNICODE -D_UNICODE -DSA_UNICODE
+SQLAPI_UNICODE_SUFFIX=u
+!ELSE
+CPPDEFS = $(CPPDEFS) -D_MBCS
+SQLAPI_UNICODE_SUFFIX=
+!ENDIF
+
+# Thread safe
+!IFDEF SA_USE_PTHREAD
+CPPDEFS = $(CPPDEFS) -DSA_USE_PTHREAD
+LIBS = $(LIBS) 
+!ENDIF
+
+!IF "$(CFG)" == "release"
+CPPFLAGS = $(CPPFLAGS) -vi -O2
+CPPDEFS  = $(CPPDEFS) -DNDEBUG
+SQLAPI_DEBUG_SUFFIX=
+!ELSEIF "$(CFG)" == "debug"
+CPPFLAGS = $(CPPFLAGS) -v -Od
+CPPDEFS  = $(CPPDEFS) -D_DEBUG
+SQLAPI_DEBUG_SUFFIX=d
+LDFLAGS = -v $(LDFLAGS)
+!ENDIF
+
+SA_NO_OLEDB=1
+SA_NO_DBLIB=1
+
+!IFDEF SA_CLIENT_ALL
+SA_CLIENT_IBASE=1
+SA_CLIENT_ODBC=1
+SA_CLIENT_ORACLE=1
+#SA_CLIENT_MSSQL=1
+SA_CLIENT_SQLBASE=1
+SA_CLIENT_INFORMIX=1
+SA_CLIENT_DB2=1
+SA_CLIENT_SYBASE=1
+SA_CLIENT_MYSQL=1
+SA_CLIENT_PGSQL=1
+SA_CLIENT_SQLITE=1
+SA_CLIENT_ASA=1
+!ENDIF
+
+!INCLUDE build/Makefile.DBMS
+
+SA_OBJS = $(SA_OBJS) utf16.obj
+
+!ifdef SA_UNICODE
+SA_OBJS = $(SA_OBJS) utf8.obj
+!ENDIF
+
+COMPILE_CC=$(CPP) -c -o
+COMPILE_CPP=$(CPP) -c -o
+
+!IF "$(CFG_LINK)" == "dynamic"
+
+CPPDEFS=-DSQLAPI_EXPORTS $(CPPDEFS) $(SA_CLI_DEFS)
+SA_TARGET_NAME=libsqlapib$(SQLAPI_UNICODE_SUFFIX)$(SQLAPI_DEBUG_SUFFIX)
+SA_TARGET=$(SA_TARGET_NAME).dylib
+
+$(SA_TARGET): $(SA_OBJS)
+	@$(LINK) -Tmd @&&|
+	$(LDFLAGS) $(SA_OBJS), $@,,$(LIBS)
+|
+	
+!ELSEIF "$(CFG_LINK)" == "static"
+
+CPPDEFS=$(CPPDEFS) $(SA_CLI_DEFS)
+SA_TARGET_NAME=libsqlapib$(SQLAPI_UNICODE_SUFFIX)s$(SQLAPI_DEBUG_SUFFIX)
+SA_TARGET=$(SA_TARGET_NAME)
+
+$(SA_TARGET): $(SA_OBJS)
+	-@$(TLIB) /P128 $@ @&&|
+$(SA_OBJS_TLIB)
+|
+
+!ENDIF
+
+!INCLUDE build/Makefile.SA_OBJS_BCC
+
+!INCLUDE build/Makefile.UTILS

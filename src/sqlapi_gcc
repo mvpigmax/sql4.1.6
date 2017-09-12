@@ -1,0 +1,90 @@
+#!/bin/sh
+# ***********************************
+# Special build configuration defines
+# CFG=(release|debug)
+ CFG_LINK=dynamic
+ SA_DEFINE=SA_NO_TRIAL
+# ***********************************
+ SQLAPI_OS		SQLAPI_OSX
+# SA_64BIT		build 64-bit version
+# SA_32BIT		build 32-bit version
+ SA_CLIENT_ALL		build all DBMS support
+# SA_CLIENT_IBASE	build InterBase/Firebird support
+# SA_CLIENT_ODBC	build ODBC support
+# SA_CLIENT_ORACLE	build Oracle support
+# SA_CLIENT_MSSQL	build MS SQLServer support (only 64-bit Linux)
+# SA_CLIENT_SQLBASE	build SQLBase support
+# SA_CLIENT_INFORMIX	build Informix support
+# SA_CLIENT_DB2		build DB2 support
+# SA_CLIENT_SYBASE	build Sybase support
+# SA_CLIENT_MYSQL	build MySQL support
+# SA_CLIENT_PGSQL	build PostgreSQL support
+# SA_CLIENT_SQLITE	build SQLite support
+# SA_CLIENT_ASA		build SQL Anywhere support
+# ***********************************
+# SA_UNICODE		build UNICODE version
+# ***********************************
+# Some features
+# SA_USE_PTHREAD	build thread safe library (with pthread library)
+# SA_PARAM_USE_DEFAULT	Use default parameter values with procedures (by default they are NULL)
+# ***********************************
+# Link SQLAPI++ with real DBMS include files (don't use includes provided by SQLAPI++)
+# SA_INCLUDES_SYBASE	specify Sybase include folder (-I<PATH>)
+# SA_INCLUDES_ODBC	specify ODBC include folder (-I<PATH>)
+# SA_INCLUDES_DB2     specify DB2 include folder  (-I<PATH>)
+# ***********************************
+# Link SQLAPI++ with DBMS client libraries (don't load them at runtime, experimental)
+# SA_STATIC_INFORMIX	with Informix ODBC/CLI
+# SA_STATIC_DB2	with DB2 CLI
+# SA_STATIC_ORACLE	with Oracle OCI
+# SA_STATIC_MYSQL	with MySQL client library
+# SA_STATIC_SQLITE	with SQLite client library
+# SA_STATIC_SYBASE	with Sybase Open Client library
+# ***********************************
+# SA_STRING_EXT	Use some modern SAString modifications
+# SA_THROW_WRONG_DATA_EXCEPTION Throw SAException when value assigned is not correct
+# ***********************************
+# SA_USE_PCH		Use precompiled headers
+# ***********************************
+# SA_SYBASE_LARGE_IDENTIFIERS  turn off OCS compatibility mode
+# ***********************************
+# SA_ODBC_SQL_WCHART_CONVERT (0|1) user UTF-16 or wchar_t for SQLWCHAR data type
+# ***********************************
+# For special g++ version use:
+# SA_CPP_VER=-2.95
+# then at Makefile g++-2.95 will be used
+# ***********************************
+# For toolchain use:
+# SA_TOOLCHAIN_PREFIX=arm-none-linux-gnueabi-
+# then at Makefile arm-none-linux-gnueabi-g++ will be used
+# ***********************************
+
+# Android sample
+#NDK_ROOT=/opt/android-ndk-r10c
+#TOOLCHAINPATH=$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64
+#PATH=$TOOLCHAINPATH/bin:$PATH
+#SYSROOT=$NDK_ROOT/platforms/android-19/arch-arm
+#TOOLCHAIN_PREFIX=arm-linux-androideabi-
+#export SA_CPPFLAGS="-frtti -fexceptions --sysroot=$SYSROOT"
+#export SA_LDFLAGS=-L/opt/android-ndk-r10c/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi
+#export SA_LIBS=-lsupc++
+#SA_OPTIONS="SA_CLIENT_ALL=1 SA_DEFINE=SA_NO_TRIAL SA_USE_PTHREAD=1 SA_TOOLCHAIN_PREFIX=$TOOLCHAIN_PREFIX"
+
+# GNU make required
+GMAKE=make
+
+# Build options
+#SA_OPTIONS="SA_CLIENT_ALL=1 SA_DEFINE=SA_NO_TRIAL SA_USE_PTHREAD=1 SA_64BIT=1 SA_UNICODE=1"
+SA_OPTIONS="SA_CLIENT_ALL=1 SA_DEFINE=SA_NO_TRIAL SA_USE_PTHREAD=1 SA_64BIT=1 "
+
+echo ------------------------
+echo --- Building release ---
+echo -----------------------
+$GMAKE CFG=release CFG_LINK=dynamic $SA_OPTIONS safe_clean all
+$GMAKE CFG=release CFG_LINK=static $SA_OPTIONS safe_clean all
+
+echo ----------------------
+echo --- Building debug ---
+echo ----------------------
+#$GMAKE CFG=debug CFG_LINK=dynamic $SA_OPTIONS safe_clean all
+#$GMAKE CFG=debug CFG_LINK=static $SA_OPTIONS safe_clean all

@@ -1,0 +1,206 @@
+# SQLAPI++ object file rules
+
+osdep.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH_CREATE) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES) osdep.cpp
+|
+
+asaAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_ASA) $(SA_INCLUDES) asaAPI$(SA_API_SRC_SUFFIX_SQLITE).cpp
+|
+
+asaClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_ASA) $(SA_INCLUDES) asaClient.cpp
+|
+
+sl3API.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_SQLITE) $(SA_INCLUDES) sl3API$(SA_API_SRC_SUFFIX_SQLITE).cpp
+|
+
+sl3Client.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_SQLITE) $(SA_INCLUDES) sl3Client.cpp
+|
+
+sqlite3.obj:
+	@$(COMPILE_CC)$@ @&&|
+$(CPPDEFS) $(SA_INCLUDES) sqlite3.c
+|
+
+pgAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_PGSQL) $(SA_INCLUDES) pgAPI$(SA_API_SRC_SUFFIX).cpp
+|
+
+pgClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_PGSQL) $(SA_INCLUDES) pgClient.cpp
+|
+
+myAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_MYSQL) $(SA_INCLUDES) myAPI$(SA_API_SRC_SUFFIX_MYSQL).cpp
+|
+
+myClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_MYSQL) $(SA_INCLUDES) myClient.cpp
+|
+
+infAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_INFORMIX) $(SA_INCLUDES) infAPI$(SA_API_SRC_SUFFIX_INFORMIX).cpp
+|
+
+infClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_INFORMIX) $(SA_INCLUDES) infClient.cpp
+|
+
+db2API.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_DB2) $(SA_INCLUDES) db2API$(SA_API_SRC_SUFFIX_DB2).cpp
+|
+
+db2Client.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_DB2) $(SA_INCLUDES) db2Client.cpp
+|
+
+ib5API.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_IBASE) $(SA_INCLUDES) ib5API$(SA_API_SRC_SUFFIX).cpp
+|
+
+ibClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_IBASE) $(SA_INCLUDES) ibClient.cpp
+|
+
+sybAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_SYBASE) $(SA_INCLUDES) sybAPI$(SA_API_SRC_SUFFIX_SYBASE).cpp
+|
+
+sybClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_SYBASE) $(SA_INCLUDES) sybClient.cpp
+|
+
+ora8API.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_ORACLE) $(SA_INCLUDES) ora8API$(SA_API_SRC_SUFFIX_ORACLE).cpp
+|
+
+ora7API.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_ORACLE) $(SA_INCLUDES) ora7API$(SA_API_SRC_SUFFIX_ORACLE).cpp
+|
+
+oraClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_ORACLE) $(SA_INCLUDES) oraClient.cpp
+|
+
+sbAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_SQLBASE) $(SA_INCLUDES) sbAPI$(SA_API_SRC_SUFFIX).cpp
+|
+
+sbClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_SQLBASE) $(SA_INCLUDES) sbClient.cpp
+|
+
+odbcAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_ODBC) $(SA_INCLUDES) odbcAPI$(SA_API_SRC_SUFFIX).cpp
+|
+
+odbcClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_ODBC) $(SA_INCLUDES) odbcClient.cpp
+|
+
+ss6API.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_SQLBASE) $(SA_INCLUDES) ss6API$(SA_API_SRC_SUFFIX).cpp
+|
+
+ssClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_SQLBASE) $(SA_INCLUDES) ssClient.cpp
+|
+
+ssDbLibClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_MSSQL) $(SA_INCLUDES) ssDbLibClient.cpp
+|
+
+ssOleDbAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_MSSQL) $(SA_INCLUDES) ssOleDbAPI.cpp
+|
+	
+ssOleDbClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_MSSQL) $(SA_INCLUDES) ssOleDbClient.cpp
+|
+
+ssNcliAPI.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_MSSQL) $(SA_INCLUDES) ssNcliAPI.cpp
+|
+	
+ssNcliClient.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS)
+$(SA_INCLUDES_MSSQL) $(SA_INCLUDES) ssNcliClient.cpp
+|
+
+.cpp.obj:
+	@$(COMPILE_CPP)$@ @&&|
+$(CPPFLAGS_PCH) $(CPPFLAGS) $(CPPDEFS) $(SA_INCLUDES) $<
+|
+
+utf8.obj:
+	@$(COMPILE_CC)$@ utf8.c
+
+utf16.obj:
+	@$(COMPILE_CC)$@ utf16.c
+
+.rc.res:
+	@$(COMPILE_RC)$@ $<
